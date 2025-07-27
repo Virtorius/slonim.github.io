@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Городская платформа</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+
+    header {
+      background: url('banner.jpg') center/cover no-repeat;
+      height: 300px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    header h1 {
+      background: rgba(0,0,0,0.5);
+      padding: 1em;
+      border-radius: 10px;
+    }
+
+    nav {
+      position: sticky; top: 0;
+      background: #222; color: #fff;
+      display: flex; flex-wrap: wrap;
+      justify-content: center;
+      padding: 0.5em; z-index: 1000;
+      font-size: 0.95em;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 0.5em;
+    }
+
+    section { padding: 1em; }
+
+    .new-in-city {
+      background: #f0f0f0;
+      border-radius: 10px;
+      padding: 1em;
+      margin-bottom: 2em;
+    }
+
+    .blocks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
+    }
+
+    .block {
+      flex: 1 1 250px;
+      background: #fafafa;
+      border-radius: 10px;
+      padding: 1em;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .block h3 { margin-top: 0; }
+
+    .large-tile-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1em;
+      margin-top: 1em;
+      background: #f8f8f8;
+      padding: 1em;
+      border-radius: 10px;
+    }
+
+    .large-tile-grid div {
+      background: white;
+      border-radius: 10px;
+      text-align: center;
+      padding: 2em 1em;
+      font-size: 1.1em;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .large-tile-grid div:hover {
+      transform: scale(1.05);
+      background: #f0f0f0;
+    }
+
+    @media (max-width: 800px) {
+      .large-tile-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 500px) {
+      .large-tile-grid { grid-template-columns: 1fr; }
+      nav { font-size: 0.85em; }
+      .blocks { flex-direction: column; }
+    }
+    .toolbar {
+  background: #eaeaea;
+  font-size: 0.9em;
+  padding: 6px 12px;
+  border-bottom: 1px solid #ccc;
+  color: #333;
+  text-align: center;
+}
+
+.digest {
+  background: #f9fafc;
+  padding: 1em;
+  margin-bottom: 2em;
+  border-radius: 10px;
+}
+
+.digest ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.digest li {
+  margin-bottom: 0.5em;
+}
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+nav {
+  background: #222;
+  color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0.5em;
+  font-size: 0.95em;
+}
+
+.toolbar {
+  background: #eaeaea;
+  font-size: 0.9em;
+  padding: 6px 12px;
+  border-bottom: 1px solid #ccc;
+  color: #333;
+  text-align: center;
+}
+.sticky-header {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+footer {
+  border-top: 1px solid #ccc;
+  padding: 1em;
+  text-align: center;
+  font-size: 0.85em;
+  color: #555;
+  background: #fdfdfd;
+}
+.actual-wrapper {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.actual-block {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.actual { border-left: 5px solid #007BFF; }
+.economy { border-left: 5px solid #8C6D1F; }
+.humor { border-left: 5px solid #FFD700; }
+.lunar { border-left: 5px solid #6C63FF; }
+
+.card h3 {
+  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+.card p {
+  margin-bottom: 0;
+}
+
+  </style>
+</head>
+<body>
+
+<header class="site-header" style="background: url('images/slonim-header.png') center center / cover no-repeat;">
+  <div class="overlay">
+  <h1>Добро пожаловать в Слоним 🌆</h1>
+  </div>
+</header>
+
+<div class="sticky-header">
+  <nav>
+    <a href="#">Карта</a>
+    <a href="#">Купоны</a>
+    <a href="#">Объявления</a>
+    <a href="#">События</a>
+    <a href="#">Мастера</a>
+    <a href="#">Помощь</a>
+  </nav>
+  <div class="toolbar" id="toolbar">
+    <!-- погодная строка сюда -->
+  </div>
+</div>
+
+
+<section class="new-in-city">
+  <h2>🔔 Новое сегодня</h2>
+  <div class="blocks">
+    <div class="block"><h3>🔥 Купон на кофе -20%</h3><p>Только до воскресенья!</p></div>
+    <div class="block"><h3>📣 Аренда на сутки</h3><p>Квартира на ул. Мира</p></div>
+    <div class="block"><h3>🧑‍🔧 Новый мастер: Иван</h3><p>Рейтинг: ★★★★★</p></div>
+  </div>
+</section>
+  <!-- Контейнер блока "Актуальное" -->
+<section class="actual-wrapper">
+  <div class="actual-block">
+    <div class="card actual">
+      <h3>Актуальное 📰</h3>
+      <p id="headline">Сегодня ожидается дождь и новые тарифы.</p>
+    </div>
+
+    <div class="card economy">
+      <h3>Экономика 💰</h3>
+      <p id="economy-tip">Цены на электричество увеличены на 5%.</p>
+    </div>
+
+    <div class="card humor">
+      <h3>Анекдот дня 😂</h3>
+      <p id="joke">Почему программист не выходит из дома? Он живёт в /home!</p>
+    </div>
+
+    <div class="card lunar">
+      <h3>Лунный огород 🌙</h3>
+      <p id="lunar-tip">Сегодня лучше не копать — день отдыха 💤</p>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="quick-access">
+  <h2>📌 Быстрый доступ к городским сервисам</h2>
+  <div class="large-tile-grid">
+    <div>🚍 Транспорт</div>
+    <div>🎫 Купоны</div>
+    <div>📢 Объявки</div>
+    <div>🏢 Для бизнеса</div>
+    <div>📅 Календарь</div>
+    <div>🧑‍🔧 Мастера</div>
+    <div>📖 Горсправка</div>
+    <div>💊 Аптеки</div>
+    <div>💬 Городские чаты</div>
+  </div>
+</section>
+
+<section>
+  <h2>📈 Рейтинги и рекомендации</h2>
+  <div class="blocks">
+    <div class="block"><h3>Топ купонов</h3><ul><li>Пицца 1+1</li><li>Массаж -30%</li></ul></div>
+    <div class="block"><h3>Объявления недели</h3><ul><li>Работа: доставка еды</li><li>Аренда авто</li></ul></div>
+    <div class="block"><h3>Популярные мастера</h3><ul><li>Алексей (электрик)</li><li>Наталья (ремонт одежды)</li></ul></div>
+    <div class="block"><h3>Полезно знать</h3><p>Транспорт, аптеки, справка</p></div>
+  </div>
+</section>
+
+<section class="ai-assistant">
+  <h2>🤖 Умный помощник & ИИ сервисы</h2>
+  <div class="blocks">
+    <div class="block">
+      <h3>📞 AI Консультант</h3>
+      <p>Задайте ИИ вопрос по городу</p>
+    </div>
+    <div class="block">
+      <h3>🧠 Доступные сервисы</h3>
+      <p>Навигация, помощь, рекомендации</p>
+    </div>
+    <div class="block">
+      <h3>🌐 Asai-Lab</h3>
+      <p>Инструменты, сервисы и эксперименты. Перейдите на платформу:</p>
+      <a href="https://asai-lab.ru" target="_blank">Перейти →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const updateInfo = () => {
+    const now = new Date();
+    const dateOptions = {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    };
+    const timeOptions = {
+      hour: '2-digit', minute: '2-digit'
+    };
+
+    const currentDate = now.toLocaleDateString('ru-RU', dateOptions);
+    const currentTime = now.toLocaleTimeString('ru-RU', timeOptions);
+    const timestamp = `${currentDate} — ${currentTime}`;
+
+    const apiKey = "a19b9e3b4da39d906822dabf22266235";
+    const city = "Slonim";
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ru`;
+    const currencyUrl = "https://www.nbrb.by/api/exrates/rates?periodicity=0";
+
+    Promise.all([
+      fetch(weatherUrl).then(res => res.json()),
+      fetch(currencyUrl).then(res => res.json())
+    ])
+    .then(([weatherData, currencyData]) => {
+      const temp = Math.round(weatherData.main.temp);
+      const description = weatherData.weather[0].description;
+      const location = weatherData.name;
+
+      const getRate = code => {
+        const found = currencyData.find(c => c.Cur_Abbreviation === code);
+        return found ? found.Cur_OfficialRate.toFixed(2) : "--";
+      };
+
+      const cityInfo = {
+        date: timestamp,
+        weather: `${temp}° ${location}, ${description}`,
+        currency: {
+          usd: getRate("USD"),
+          eur: getRate("EUR"),
+          rub: getRate("RUB")
+        }
+      };
+
+      document.getElementById("toolbar").textContent =
+        `📅 ${cityInfo.date} | 🌤 ${cityInfo.weather} | 💱 USD ${cityInfo.currency.usd} | EUR ${cityInfo.currency.eur} | ₽ ${cityInfo.currency.rub}`;
+
+      const digestItems = [
+        "💼 Новый закон: самозанятым — налог 10%",
+        "📉 Рост цен на ЖКХ на 7%",
+        "🛑 Ремонт на ул. Гагарина до 30 июля",
+        "🚨 Ливни ожидаются в воскресенье"
+      ];
+
+      const digestList = document.getElementById("digest").querySelector("ul");
+      digestList.innerHTML = "";
+      digestItems.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        digestList.appendChild(li);
+      });
+    })
+    .catch(error => console.error("Ошибка при обновлении данных:", error));
+  };
+
+  updateInfo();
+  setInterval(updateInfo, 3 * 60 * 60 * 1000); // каждые 3 часа
+</script>
+<script>
+  async function loadData() {
+  const sources = {
+    headline: "data/news.json",
+    economy: "data/economy.json",
+    joke: "data/jokes.json",
+    lunar: "data/lunar-tips.json"
+  };
+
+  for (const [id, url] of Object.entries(sources)) {
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      const el = document.getElementById(id);
+      if (el) el.textContent = data[id] || data.tip || data.joke || "Нет данных 🤷";
+    } catch (error) {
+      console.error(`Ошибка загрузки ${url}:`, error);
+    }
+  }
+}
+
+window.addEventListener("DOMContentLoaded", loadData);
+
+</script>
+
+
+
+<footer>
+  <p>© 2025 Городская платформа Слоним</p>
+</footer>
+
+</body>
+</html>
